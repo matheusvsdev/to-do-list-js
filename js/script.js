@@ -6,7 +6,11 @@ const editForm = document.querySelector("#edit-form");
 const editInput = document.querySelector("#edit-input");
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
 
+let oldInputValue;
+
 // 02 - Funções
+
+// Adicionando e salvando a nova tarefa
 const saveTask = (text) => {
   // Criando a div todo no HTML
   const todo = document.createElement("div");
@@ -55,8 +59,31 @@ const saveTask = (text) => {
   inputTask.focus();
 };
 
+// Função para mudar formulário
+// Adicionar tarefa ou remover
+// Quando chamada, ela muda o estado de "hide" para "mostrar"
+// ou de "mostrar" para "hide"
+const toggleForms = () => {
+  editForm.classList.toggle("hide"); // Esconde menu de opções
+  addTask.classList.toggle("hide"); // Esconde formulário de adicionar tarefa
+  todoList.classList.toggle("hide"); // Esconde a lista de tarefas
+};
+
+const updateTodo = (editInputValue) => {
+  const todoAll = document.querySelectorAll(".todo");
+
+  todoAll.forEach((todo) => {
+    let todoTitle = todo.querySelector("h3");
+
+    if (todoTitle.innerText === oldInputValue) {
+      todoTitle.innerText = editInputValue;
+    }
+  });
+};
+
 // 03 - Eventos
 
+// Evento de guardar valor digitado no input, clicar no botão de adicionar e salvar tarefa
 addTask.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -65,4 +92,61 @@ addTask.addEventListener("submit", (e) => {
   if (inputValue) {
     saveTask(inputValue);
   }
+});
+
+// Evento de marcar ações nas tarefas
+document.addEventListener("click", (e) => {
+  // Busca o botão(elemento) que foi clicado
+  const targetElement = e.target;
+
+  // Dentro da div "pai"
+  const parentElement = targetElement.closest("div");
+
+  let taskTitle;
+
+  if (parentElement && parentElement.querySelector("h3")) {
+    taskTitle = parentElement.querySelector("h3").innerText;
+  }
+
+  // Pega o botão de confirmar tarefa
+  if (targetElement.classList.contains("finish-todo")) {
+    // Ativa ele para concluída (done)
+    parentElement.classList.toggle("done"); // "toggle" ativa e desativa clicando, diferente do "add"
+  }
+
+  // Pega o botão de editar tarefa
+  if (targetElement.classList.contains("edit-todo")) {
+    // Chama a função de editar tarefa
+    toggleForms();
+
+    // Atribui o valor do campo de edição para o novo título da tarefa
+    editInput.value = taskTitle;
+
+    // Puxa o valor antigo do título para apresentar no campo de edição do título da tarefa
+    oldInputValue = taskTitle;
+  }
+
+  // Pega o botão de remover tarefa
+  if (targetElement.classList.contains("remove-todo")) {
+    parentElement.remove();
+  }
+});
+
+// Cria evento para botão CANCELAR
+cancelEditBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // Chama a função para alterar o que tiver escondido para mostrar e o que tiver a mostra para esconder
+  toggleForms();
+});
+
+editForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const editInputValue = editInput.value;
+
+  if (editInputValue) {
+    updateTodo(editInputValue);
+  }
+  toggleForms();
 });
