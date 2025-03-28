@@ -46,7 +46,7 @@ const saveTask = (text, done = 0, save = 1) => {
   // Criando botao de cancelar
   const cancelButton = document.createElement("button");
   // Colocando classe no botao
-  cancelButton.classList.add("finish-todo");
+  cancelButton.classList.add("remove-todo");
   // Colocando ícone dentro do botao
   cancelButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   // Colocando botao dentro da div 'todo'
@@ -190,6 +190,8 @@ document.addEventListener("click", (e) => {
   // Pega o botão de remover tarefa
   if (targetElement.classList.contains("remove-todo")) {
     parentElement.remove();
+
+    removeToDoLocalStorage(taskTitle);
   }
 });
 
@@ -233,13 +235,21 @@ filterSelect.addEventListener("change", (e) => {
   filterToDo(filterValue);
 });
 
+// Local Storage
 const getToDosLocalStorage = () => {
   const todoAll = JSON.parse(localStorage.getItem("todoAll")) || [];
 
   return todoAll;
 };
 
-// Local Storage
+const loadToDos = () => {
+  const todoAll = getToDosLocalStorage();
+
+  todoAll.forEach((todo) => {
+    saveTask(todo.text, todo.done, 0);
+  });
+};
+
 const saveToDoLocalStorage = (todo) => {
   // Todos os To do da Local Storage
   const todoAll = getToDosLocalStorage();
@@ -250,3 +260,12 @@ const saveToDoLocalStorage = (todo) => {
   // Salvar tudo na Local Storage
   localStorage.setItem("todoAll", JSON.stringify(todoAll));
 };
+
+const removeToDoLocalStorage = (todoText) => {
+  const todoAll = getToDosLocalStorage();
+
+  const filteredToDos = todoAll.filter((todo) => todo.text !== todoText);
+  localStorage.setItem("todoAll", JSON.stringify(filteredToDos));
+};
+
+loadToDos();
