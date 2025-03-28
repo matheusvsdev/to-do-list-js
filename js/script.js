@@ -106,6 +106,33 @@ const getSearchTodo = (search) => {
   });
 };
 
+const filterToDo = (filterValue) => {
+  const todoAll = document.querySelectorAll(".todo");
+
+  switch (filterValue) {
+    case "all":
+      todoAll.forEach((todo) => (todo.style.display = "flex"));
+      break;
+    case "done":
+      todoAll.forEach((todo) =>
+        todo.classList.contains("done")
+          ? (todo.style.display = "flex")
+          : (todo.style.display = "none")
+      );
+      break;
+    case "todo":
+      todoAll.forEach((todo) =>
+        !todo.classList.contains("done")
+          ? (todo.style.display = "flex")
+          : (todo.style.display = "none")
+      );
+      break;
+
+    default:
+      break;
+  }
+};
+
 // 03 - Eventos
 
 // Evento de guardar valor digitado no input, clicar no botão de adicionar e salvar tarefa
@@ -188,4 +215,11 @@ eraseButton.addEventListener("click", (e) => {
   searchInput.value = "";
 
   searchInput.dispatchEvent(new Event("keyup"));
+});
+
+// Evento que filtra as tasks de acordo com a opcao, chamando a funcao "filterToDo"
+filterSelect.addEventListener("change", (e) => {
+  const filterValue = e.target.value;
+
+  filterToDo(filterValue);
 });
