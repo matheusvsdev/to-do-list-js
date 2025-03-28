@@ -14,7 +14,7 @@ let oldInputValue;
 // 02 - Funções
 
 // Adicionando e salvando a nova tarefa
-const saveTask = (text) => {
+const saveTask = (text, done = 0, save = 1) => {
   // Criando a div todo no HTML
   const todo = document.createElement("div");
   todo.classList.add("todo");
@@ -51,6 +51,15 @@ const saveTask = (text) => {
   cancelButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
   // Colocando botao dentro da div 'todo'
   todo.appendChild(cancelButton);
+
+  // Utilizando dados da Local Storage
+  if (done) {
+    todo.classList.add("done");
+  }
+
+  if (save) {
+    saveToDoLocalStorage({ text, done });
+  }
 
   // Colocando a div 'todo' dentro da div 'todo-list'
   todoList.appendChild(todo);
@@ -223,3 +232,21 @@ filterSelect.addEventListener("change", (e) => {
 
   filterToDo(filterValue);
 });
+
+const getToDosLocalStorage = () => {
+  const todoAll = JSON.parse(localStorage.getItem("todoAll")) || [];
+
+  return todoAll;
+};
+
+// Local Storage
+const saveToDoLocalStorage = (todo) => {
+  // Todos os To do da Local Storage
+  const todoAll = getToDosLocalStorage();
+
+  // Adicionar o novo To do no Array
+  todoAll.push(todo);
+
+  // Salvar tudo na Local Storage
+  localStorage.setItem("todoAll", JSON.stringify(todoAll));
+};
