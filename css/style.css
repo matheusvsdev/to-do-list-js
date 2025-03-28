@@ -3,4 +3,90 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Helvetica;
+  color: #333;
+}
+
+body {
+  background-image: url(../img/todo.jpg);
+  background-size: cover;
+}
+
+button {
+  background-color: #fdfdfd;
+  color: #333;
+  border: 2px solid #222;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+}
+
+button:hover {
+  background-color: #222;
+  color: #fdfdfd;
+}
+
+button:hover > i {
+  color: #fdfdfd;
+}
+
+button i {
+  color: #222;
+  font-weight: bold;
+  pointer-events: none; /* Icone esta dentro do Botao, logo precisa desativar para o icone funcionar quando com o evento de click no JavaScript */
+}
+
+/* Espaçamento interno dos placeholder de input e select */
+input,
+select {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Classe hide do form com ID {edit-form} */
+.hide {
+  display: none;
+}
+
+/* To Do header */
+.todo-container {
+  max-width: 450px;
+  margin: 3rem auto;
+  background-color: #fdfdfd;
+  padding: 1.5rem;
+  border-radius: 15px;
+}
+
+.todo-container header {
+  text-align: center;
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+/* To Do form */
+#todo-form,
+#edit-form {
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+#todo-form p,
+#edit-form p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-control {
+  display: flex;
+}
+
+.form-control input {
+  margin-right: 0.3rem;
+}
+
+#cancel-edit-btn {
+  margin-top: 1rem;
 }
