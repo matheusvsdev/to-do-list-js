@@ -5,6 +5,9 @@ const inputTask = document.querySelector("#todo-input");
 const editForm = document.querySelector("#edit-form");
 const editInput = document.querySelector("#edit-input");
 const cancelEditBtn = document.querySelector("#cancel-edit-btn");
+const searchInput = document.querySelector("#search-input");
+const eraseButton = document.querySelector("#erase-button");
+const filterSelect = document.querySelector("#filter-select");
 
 let oldInputValue;
 
@@ -69,14 +72,36 @@ const toggleForms = () => {
   todoList.classList.toggle("hide"); // Esconde a lista de tarefas
 };
 
+// Função que edita o título da tarefa
 const updateTodo = (editInputValue) => {
+  // Selectiona todas as divs "todo"
+  const todoAll = document.querySelectorAll(".todo");
+
+  // Percorre por todos os títulos "h3" da div "todo"
+  todoAll.forEach((todo) => {
+    // Pega o título "h3"
+    let todoTitle = todo.querySelector("h3");
+
+    // Se o título for igual ao antigo
+    if (todoTitle.innerText === oldInputValue) {
+      // Ele atribui ao todoTitle
+      todoTitle.innerText = editInputValue;
+    }
+  });
+};
+
+const getSearchTodo = (search) => {
   const todoAll = document.querySelectorAll(".todo");
 
   todoAll.forEach((todo) => {
-    let todoTitle = todo.querySelector("h3");
+    let title = todo.querySelector("h3").innerText.toLowerCase();
 
-    if (todoTitle.innerText === oldInputValue) {
-      todoTitle.innerText = editInputValue;
+    const normalizedSearch = search.toLowerCase();
+
+    todo.style.display = "flex";
+
+    if (!title.includes(normalizedSearch)) {
+      todo.style.display = "none";
     }
   });
 };
@@ -140,6 +165,7 @@ cancelEditBtn.addEventListener("click", (e) => {
   toggleForms();
 });
 
+// Cria um evento de editar tarefa
 editForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -149,4 +175,17 @@ editForm.addEventListener("submit", (e) => {
     updateTodo(editInputValue);
   }
   toggleForms();
+});
+
+searchInput.addEventListener("keyup", (e) => {
+  const search = e.target.value;
+  getSearchTodo(search);
+});
+
+eraseButton.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  searchInput.value = "";
+
+  searchInput.dispatchEvent(new Event("keyup"));
 });
