@@ -95,6 +95,8 @@ const updateTodo = (editInputValue) => {
     if (todoTitle.innerText === oldInputValue) {
       // Ele atribui ao todoTitle
       todoTitle.innerText = editInputValue;
+
+      updateToDoLocalStorage(oldInputValue, editInputValue);
     }
   });
 };
@@ -173,6 +175,8 @@ document.addEventListener("click", (e) => {
   if (targetElement.classList.contains("finish-todo")) {
     // Ativa ele para concluída (done)
     parentElement.classList.toggle("done"); // "toggle" ativa e desativa clicando, diferente do "add"
+
+    updateToDosStatusLocalStorage(taskTitle);
   }
 
   // Pega o botão de editar tarefa
@@ -242,14 +246,18 @@ const getToDosLocalStorage = () => {
   return todoAll;
 };
 
+// Carrega os dados do LocalStorage
 const loadToDos = () => {
+  // Chama getToDosLocalStorage()
   const todoAll = getToDosLocalStorage();
 
+  // Percorre todas as tarefas e chama a função que salva
   todoAll.forEach((todo) => {
     saveTask(todo.text, todo.done, 0);
   });
 };
 
+// Salva as tarefas no LocalStorage
 const saveToDoLocalStorage = (todo) => {
   // Todos os To do da Local Storage
   const todoAll = getToDosLocalStorage();
@@ -261,11 +269,44 @@ const saveToDoLocalStorage = (todo) => {
   localStorage.setItem("todoAll", JSON.stringify(todoAll));
 };
 
+// Remove as tarefas do Local Storage
 const removeToDoLocalStorage = (todoText) => {
+  // Busca todas as tarefas salvas no Local Storage
   const todoAll = getToDosLocalStorage();
 
+  // Filtra por título
   const filteredToDos = todoAll.filter((todo) => todo.text !== todoText);
+
+  // Atribui a exclusão do item no Array e entao converte para salvar
   localStorage.setItem("todoAll", JSON.stringify(filteredToDos));
+};
+
+// Atualiza o status das tarefas no Local Storage
+const updateToDosStatusLocalStorage = (todoText) => {
+  // Busca todas as tarefas salvas no Local Storage
+  const todoAll = getToDosLocalStorage();
+
+  // Utiliza o map, pois não retorna dados, apenas modifica os dados originais
+  todoAll.map((todo) =>
+    todo.text === todoText ? (todo.done = !todo.done) : null
+  );
+
+  // Atribui os itens atualizados no Array e então converte para salvar
+  localStorage.setItem("todoAll", JSON.stringify(todoAll));
+};
+
+// Atualiza o título das tarefas no Local Storage
+const updateToDoLocalStorage = (todoOldText, todoNewText) => {
+  // Busca todas as tarefas salvas no Local Storage
+  const todoAll = getToDosLocalStorage();
+
+  // Utiliza o map, pois não retorna dados, apenas modifica os dados originais
+  todoAll.map((todo) =>
+    todo.text === todoOldText ? (todo.text = todoNewText) : null
+  );
+
+  // Atribui os itens atualizados no Array e então converte para salvar
+  localStorage.setItem("todoAll", JSON.stringify(todoAll));
 };
 
 loadToDos();

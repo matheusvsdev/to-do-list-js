@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Helvetica;
-  color: #333;
+  color: #7d02ad;
 }
 
 html {
@@ -11,14 +11,15 @@ html {
 }
 
 body {
-  background-image: url(../img/todo.jpg);
+  background-image: url(../img/galaxy.jpg);
   background-size: cover;
+  background-position: center;
 }
 
 button {
   background-color: #fdfdfd;
-  color: #333;
-  border: 2px solid #222;
+  color: #7d02ad;
+  border: 2px solid #0266ad;
   padding: 0.4rem 0.7rem;
   border-radius: 10px;
   font-size: 1rem;
@@ -30,7 +31,7 @@ button {
 }
 
 button:hover {
-  background-color: #222;
+  background-color: #0266ad;
   color: #fdfdfd;
 }
 
@@ -39,7 +40,7 @@ button:hover > i {
 }
 
 button i {
-  color: #222;
+  color: #7d02ad;
   font-weight: bold;
   pointer-events: none; /* Icone esta dentro do Botao, logo precisa desativar para o icone funcionar quando com o evento de click no JavaScript */
 }
@@ -156,7 +157,7 @@ select {
 /* Tarefa pronta = done */
 .done {
   margin-top: 0.3rem;
-  background-color: #68ce6a;
+  background-color: #baa7f1;
   border-radius: 10px;
 }
 .done h3 {
